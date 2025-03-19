@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" contents="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Weather</title>
+    <link rel="stylesheet" href="/assets/css/index.css">
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+    <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+</head>
+<body>
+    <header></header>
+    <main>
+        <section id="weather-info">
+            <div id="search-container">
+                <input type="search" id="wsearch" name="wsearch" placeholder="Enter your Postal Code">
+                <button id="search-button">
+                    <span class="iconify" data-icon="material-symbols:search-rounded" data-inline="false"></span>
+                </button>
+                <ul id="suggestions"></ul>
+            </div>
+        </section>
 
+        <section id="current-conditions-display">
+            <div id="forecast-info"></div>
+            <label class="switch">
+                <input type="checkbox" id="unit-toggle">
+                <span class="slider">°C °F</span>
+            </label>
+            <span id="unit-label"></span>
+            <div id="current-weather-icon"></div>
+            <div id="current-conditions">
+                <div id="current-temperature"></div>
+                <div id="current-wind-speed"></div>
+                <div id="current-weather"></div>
+            </div>
+        </section> 
+        <section id="forecast-display"></section>
+    </main>
+    <footer></footer>
+    <script src="/src/main.js" defer></script>
+</body>
+</html>
