@@ -77,7 +77,8 @@ class CurrentConditions {
     }
 }
 
-function isValidPostalCode(postalCode) { // This only works for 5-digit zip codes
+function isValidPostalCode(postalCode) {
+    // [ To Do ]: Add Support for International Postal Codes
     const regex = /^[0-9]{5}$/;
     return regex.test(postalCode);
 }
@@ -113,6 +114,8 @@ function displaySuggestions(suggestions) {
     suggestions.forEach(location => {
 
         const listItem = document.createElement('li');
+        // Add Bootstrap Classes to List Item
+        listItem.classList.add("list-group-item");
         listItem.textContent = `${location.name}, ${location.admin1 || ''}, ${location.country}`;
         listItem.addEventListener('click', () => {
             if (location.postcodes && location.postcodes.length > 1) {
@@ -219,17 +222,17 @@ function handleSearch() {
                     currentTemperatureDiv.innerHTML = `${currentTemperature} ${temperatureUnitMap.get(tempUnit)}`;
 
                     const currentWindSpeedDiv = document.getElementById('current-wind-speed');
-                    currentWindSpeedDiv.innerHTML = `Wind Speed: ${myLocation.currentConditions.windspeed} mph ${myLocation.currentConditions.windCardinalDirection}`;
+                    currentWindSpeedDiv.innerHTML = `${myLocation.currentConditions.windspeed} mph ${myLocation.currentConditions.windCardinalDirection}`;
 
                     const currentWeatherDiv = document.getElementById('current-weather');
                     currentWeatherDiv.innerHTML = `${weatherCodeMap.get(myLocation.currentConditions.weathercode)}`;
 
                     const currentWeatherIconDiv = document.getElementById('current-weather-icon');
                     const weatherIcon = weatherIconMap.get(myLocation.currentConditions.weathercode);
-                    currentWeatherIconDiv.innerHTML = `<span class="iconify" data-icon="${weatherIcon}" data-inline="false"></span>`;
+                    currentWeatherIconDiv.innerHTML = `<span class="iconify" data-icon="${weatherIcon}" data-inline="false" style="width: 100px; height: 100px;"></span>`;
 
-                    const forecastDisplayDiv = document.getElementById('forecast-display');
-                    forecastDisplayDiv.innerHTML = '';
+                    const forecastRow = document.getElementById('#forecast-info');
+        
                     for (let i = 2; i < 7; ++i) {
                         const dayForecast = forecast.data.daily.weather_code[i];
                         const dayIcon = weatherIconMap.get(dayForecast);
@@ -239,41 +242,19 @@ function handleSearch() {
                         const tempMin = Math.round(forecast.data.daily.temperature_2m_min[i]);
                         const precipitationPerc = forecast.data.daily.precipitation_probability_max[i];
                         const dayDiv = document.createElement('div');
+                        
+                        // Create a Column for Each Forecast Day for Bootstrap's Grid Layout
+                        dayDiv.className = 'col-12 col-md-auto col-lg-auto border p-3';
 
-                        dayDiv.className = 'forecast-day';
-
-                        const dateDiv = document.createElement('div');
-                        dateDiv.className = 'forecast-date';
-                        dateDiv.innerHTML = `<p>${formattedDate}</p>`;
-
-                        const iconDiv = document.createElement('div');
-                        iconDiv.className = 'forecast-icon';
-                        iconDiv.innerHTML = `<span class="iconify" data-icon="${dayIcon}" data-inline="false"></span>`;
-
-                        const descriptionDiv = document.createElement('div');
-                        descriptionDiv.className = 'forecast-description';
-                        descriptionDiv.innerHTML = `<p>${weatherCodeMap.get(dayForecast)}</p>`;
-
-                        const tempMaxDiv = document.createElement('div');
-                        tempMaxDiv.className = 'temp-max';
-                        tempMaxDiv.innerHTML = `<p>${tempMax} ${temperatureUnitMap.get(tempUnit)}</p>`;
-
-                        const tempMinDiv = document.createElement('div');
-                        tempMinDiv.className = 'temp-min';
-                        tempMinDiv.innerHTML = `<p>${tempMin} ${temperatureUnitMap.get(tempUnit)}</p>`;
-
-                        const precipPercentage = document.createElement('div');
-                        precipPercentage.className = 'precp-perc';
-                        precipPercentage.innerHTML = `<span class="iconify" data-icon="wi:raindrop" data-inline="false"></span> ${precipitationPerc}%`;
-
-                        dayDiv.appendChild(dateDiv);
-                        dayDiv.appendChild(iconDiv);
-                        dayDiv.appendChild(descriptionDiv);
-                        dayDiv.appendChild(tempMaxDiv);
-                        dayDiv.appendChild(tempMinDiv);
-                        dayDiv.appendChild(precipPercentage);
-
-                        forecastDisplayDiv.appendChild(dayDiv);
+                        dayDiv.innerHTML = `
+                            <div class="fw-bold">${formattedDate}</div>
+                            <div><span class="iconify" data-icon="${dayIcon}" data-inline="false" style="width: 50px; height: 50px;"></span></div>
+                            <div>${weatherCodeMap.get(dayForecast)}</div>
+                            <div>${tempMax} ${temperatureUnitMap.get(tempUnit)}</div>
+                            <div>${tempMin} ${temperatureUnitMap.get(tempUnit)}</div>
+                            <div><span class="iconify" data-icon="wi:raindrop" data-inline="false" style="width: 50px; height: 50px;"></span> ${precipitationPerc}%</div>
+                        `;
+                        forecastRow.appendChild(dayDiv);
                     }
                 });
             } else {
