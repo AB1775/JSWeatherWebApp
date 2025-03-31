@@ -9,7 +9,7 @@ This project was created to gain familiarity with JavaScript, DOM manipulation, 
 
 ## Technologies Used
 - HTML
-- CSS
+- Bootstrap
 - JavaScript
 - Open-Meteo API
 
